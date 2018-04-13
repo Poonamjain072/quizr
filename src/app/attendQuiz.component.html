@@ -1,0 +1,47 @@
+<header></header>
+<div class="container" *ngIf='showForm==true'>
+    <div class="row">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="">First and last name</span>
+            </div>
+            <input type="text" class="form-control" [(ngModel)]='firstName'>
+            <input type="text" class="form-control" [(ngModel)]='lastName'>
+        </div>
+    </div>
+    <div>&nbsp;</div>
+
+    <div class="row">
+        <div class="col-md-3 offset-md-6">
+            <button class="btn btn-outline-primary btn-lg" (click)='showForm=false'>Start</button>
+        </div>
+    </div>
+</div>
+<div class="container" *ngIf='showForm==false' [hidden]='showScore==true'>
+    <div *ngFor="let question of allQuestions;let i=index" class="col-md-8 offset-md-2">
+        <div *ngIf='i==questionIndex' class="card">
+            <div class="card-header">{{question.questionType}}</div>
+            <div class="card-body">
+                <h6 class="card-title">Q.{{i+1}}. {{question.question}}</h6>
+                <div class="custom-control custom-radio" *ngFor='let option of question.options'>
+                    <input type="radio" id={{option.value}} name="customRadio" class="custom-control-input" (change)='answer=option.value'>
+                    <label class="custom-control-label" for={{option.value}}>{{option.value}}</label>
+                </div>
+            </div>
+            <div class="card-footer">
+                Question {{i+1}} / {{allQuestions.length}}
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="text-center">
+        <button class="btn btn-primary btn-lg" *ngIf='(allQuestions.length-1)>questionIndex' (click)='checkAnswer()'>Next</button>
+        <button class="btn btn-primary btn-lg" *ngIf='(allQuestions.length-1)==questionIndex' (click)='showScore=true'>Submit</button>
+    </div>
+</div>
+
+<div class="container" *ngIf='showScore==true'>
+    <div class="col-md-8 offset-md-2">
+    <h4>Congrats you have scored {{score}}.</h4>
+</div>
+</div>

@@ -1,0 +1,85 @@
+<header></header>
+<div class="row">
+    <div class="col-md-2 offset-md-1">
+        <p [ngClass]="{'selectedQuestionType':selectedQuestionType==questionType}" class="questionType" *ngFor='let questionType of questionsType'
+            (click)='selectedQuestionType=questionType'>{{questionType}}</p>
+    </div>
+    <div class="col-md-8">
+        <div *ngIf="selectedQuestionType==''">
+            <div *ngFor='let question of allQuestions;let i=index'>
+                <div class="card">
+                    <div class="card-header">
+                        {{question.questionType}}
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            {{i+1}}. {{question.question}}
+                        </h6>
+                        <div class="card-text">
+                            <div *ngFor='let option of question.options'>
+                                <div class="form-check disabled">
+                                    <input class="form-check-input" type="radio" name={{option.value}} id={{option.value}} value={{option.value}} [checked]="option.selected"
+                                        disabled>
+                                    <label class="form-check-label" for="exampleRadios1">
+                                        {{option.value}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+        <div *ngIf="selectedQuestionType=='Multiple choice'">
+            <input type='text' [(ngModel)]="editorValue" class="form-control" placeholder="Select the ones you like ?">
+            <br>
+            <div *ngFor='let option of options;let i of index'>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="radio" aria-label="Radio button for following text input" [value]='option.selected' (change)='option.selected=!option.selected'
+                                [id]='option.name'>
+                        </div>
+                    </div>
+                    <input type="text" placeholder={{option.name}} [(ngModel)]="option.value" class="form-control" aria-label="Text input with radio button">
+                </div>
+                <br>
+            </div>
+            <button (click)='addNewOption()' class="btn btn-outline-secondary">Add new option</button>
+            <button class="btn btn-outline-primary" (click)='saveQuestion()'>Save</button>
+        </div>
+        <div *ngIf="selectedQuestionType=='Single choice'">
+            <input type='text' [(ngModel)]="editorValue" class="form-control" placeholder="Which one do you like ?">
+            <br>
+            <div *ngFor='let option of options;let i=index'>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="radio" aria-label="Radio button for following text input" [value]='option.selected' (change)='answer=option.value'
+                                name='single' [id]='option.name'>
+                        </div>
+                    </div>
+                    <input type="text" placeholder={{option.name}} [(ngModel)]="option.value" class="form-control" aria-label="Text input with radio button">
+                </div>
+                <br>
+            </div>
+            <button (click)='addNewOption()' class="btn btn-outline-secondary">Add new option</button>
+            <button class="btn btn-outline-primary" (click)='saveQuestion()'>Save</button>
+        </div>
+        <div *ngIf="selectedQuestionType=='True or False'">
+            <input type='text' [(ngModel)]="editorValue" class="form-control" placeholder="Is [your statement here] True or False ?">
+            <br>
+            <div class="custom-control custom-radio" *ngFor='let option of trueFalseOption'>
+                <input type="radio" id={{option.value}} name="customRadio" class="custom-control-input" [value]='option.selected' (change)='answer=option.value' >
+                <label class="custom-control-label" for={{option.value}}>{{option.value}}</label>
+            </div>
+            <br>
+            <button class="btn btn-outline-primary" (click)='saveQuestion()'>Save</button>
+        </div>
+        <div *ngIf="selectedQuestionType=='Essay'">
+            Essay
+        </div>
+
+    </div>
+</div>
